@@ -1,0 +1,11 @@
+node_modules/
+.expo/
+dist/
+build/
+*.env.local
+*.env*.local
+.DS_Store
+expo_out.txt
+expo_err.txt
+npm_install_clean.log
+npm-debug.log*

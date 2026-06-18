@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "OXO",
+    "slug": "oxo-system",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icons/oxo-512.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#000008",
+    "splash": {
+      "backgroundColor": "#000008",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.oxo.system"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/oxo-512.png",
+        "backgroundColor": "#000008"
+      },
+      "package": "com.oxo.system"
+    },
+    "web": {
+      "favicon": "./assets/icons/oxo-192.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "scheme": "oxo"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "versao": "2.0.0",
+    "gerado_em": "2026-06-18",
+    "descricao": "Contexto completo do Comandante — alma do OXO_CORE_LOOP"
+  },
+
+  "perfil_usuario": {
+    "nome": "Wesley Simões",
+    "email": "wesleysimoes770@gmail.com",
+    "aniversario": "02 de agosto",
+    "nascimento_horario": "15:50",
+    "cidade": "São Paulo, Brasil",
+    "perfil_astrologico": {
+      "signo": "Leão",
+      "ascendente": "Capricórnio"
+    },
+    "traços_personalidade": [
+      "Extremamente focado",
+      "natureza",
+      "tatuagem",
+      "misticismo",
+      "Umbanda",
+      "tarot"
+    ],
+    "objetivos": "Desenvolvimento de tarot próprio e gestão de interface expressiva",
+    "meta_financeira_mensal": 5000.00,
+    "moeda": "BRL"
+  },
+
+  "preferencias_sistema": {
+    "tom_voz": "Focado, preciso, intuitivo e com toque místico",
+    "estilo_interface": "Holográfica ciano, minimalista, obsidiana",
+    "comportamento_ia": "Proativo, observador, multimodal",
+    "lingua": "pt-BR"
+  },
+
+  "negocios": [
+    {
+      "id": "tatuagem",
+      "nome": "Estúdio de Tatuagem",
+      "tipo": "servico",
+      "modelo_cobranca": "PIX antecipado obrigatorio",
+      "regra_critica": "NUNCA confirmar agendamento sem hash PIX validado",
+      "integracoes": ["mercado_pago", "google_calendar", "n8n"]
+    },
+    {
+      "id": "cosmeticos",
+      "nome": "Revenda de Cosméticos",
+      "tipo": "produto",
+      "gatilhos": ["escassez","prova_social","reciprocidade","autoridade","conexao_espiritual"],
+      "integracoes": ["claude_api", "whatsapp_evolution"]
+    }
+  ],
+
+  "infraestrutura": {
+    "backend_url": "http://localhost:8000",
+    "n8n_url": "https://n8n-production-fc3e.up.railway.app",
+    "websocket_path": "/ws",
+    "ia_modelo": "claude-sonnet-4-6"
+  },
+
+  "regras_inquebraveis": [
+    "NUNCA confirme agendamento sem hash PIX validado",
+    "NUNCA alucine dados financeiros",
+    "NUNCA exponha chaves em logs ou UI"
+  ]
+}
