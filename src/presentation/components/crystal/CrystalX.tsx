@@ -20,23 +20,51 @@ interface Props {
   size?: number;
 }
 
+// Duração do "respiro" por estado — mais rápido = mais alerta/ativo
+const BREATHE_MS: Record<AvatarState, number> = {
+  ONLINE:      2000,
+  PROCESSANDO: 650,
+  VENDA:       450,
+  ALERTA:      550,
+  PAUSADO:     3200,
+};
+
 export function CrystalX({ size = 200 }: Props) {
   const avatarState = useOxoStore((s) => s.avatarState);
   const breathe = useRef(new Animated.Value(0)).current;
   const spin    = useRef(new Animated.Value(0)).current;
+  const burst   = useRef(new Animated.Value(1)).current;
+  const breatheLoopRef = useRef<Animated.CompositeAnimation | null>(null);
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(breathe, { toValue: 1, duration: 2000, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
-        Animated.timing(breathe, { toValue: 0, duration: 2000, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
-      ])
-    ).start();
-
     Animated.loop(
       Animated.timing(spin, { toValue: 1, duration: 8000, easing: Easing.linear, useNativeDriver: true })
     ).start();
   }, []);
+
+  // Reinicia o loop de respiração com duração própria do estado atual
+  useEffect(() => {
+    breatheLoopRef.current?.stop();
+    const dur = BREATHE_MS[avatarState] ?? 2000;
+    breatheLoopRef.current = Animated.loop(
+      Animated.sequence([
+        Animated.timing(breathe, { toValue: 1, duration: dur, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
+        Animated.timing(breathe, { toValue: 0, duration: dur, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
+      ])
+    );
+    breatheLoopRef.current.start();
+  }, [avatarState]);
+
+  // Burst de escala ao detectar venda — feedback visual imediato
+  useEffect(() => {
+    if (avatarState === 'VENDA') {
+      burst.setValue(1);
+      Animated.sequence([
+        Animated.timing(burst, { toValue: 1.18, duration: 180, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+        Animated.spring(burst, { toValue: 1, friction: 4, tension: 80, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [avatarState]);
 
   const glowOpacity = breathe.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1] });
   const ringRotate  = spin.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
@@ -49,7 +77,26 @@ export function CrystalX({ size = 200 }: Props) {
 
   return (
     <View style={[styles.wrap, { width: w, height: h }]}>
-      <Animated.View style={[StyleSheet.absoluteFill, { opacity: glowOpacity }]}>
+      {/* anel orbital — gira continuamente, cor reflete o estado do avatar */}
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          { transform: [{ rotate: ringRotate }] },
+        ]}
+      >
+        <Svg width={w} height={h} viewBox="0 0 280 290">
+          <Circle
+            cx={140} cy={145} r={128}
+            fill="none"
+            stroke={glowColor}
+            strokeWidth={1.5}
+            strokeDasharray="4 14"
+            opacity={0.55}
+          />
+        </Svg>
+      </Animated.View>
+
+      <Animated.View style={[StyleSheet.absoluteFill, { opacity: glowOpacity, transform: [{ scale: burst }] }]}>
         <Svg width={w} height={h} viewBox="0 0 280 290">
           <Defs>
             <LinearGradient id="xg1" x1="0%" y1="0%" x2="100%" y2="100%">
