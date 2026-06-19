@@ -4,7 +4,7 @@
     {
       "label": "OXO: Install & Start Expo (tunnel)",
       "type": "shell",
-      "command": "npm install && npx expo install --fix && npx expo start --tunnel",
+      "command": "(pkill -f 'expo start' || true) && npm install && npx expo install --fix && npx expo start --tunnel --port 8082",
       "group": { "kind": "build", "isDefault": true },
       "presentation": {
         "reveal": "always",
