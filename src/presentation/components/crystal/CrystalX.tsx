@@ -48,8 +48,8 @@ export function CrystalX({ size = 200 }: Props) {
     const dur = BREATHE_MS[avatarState] ?? 2000;
     breatheLoopRef.current = Animated.loop(
       Animated.sequence([
-        Animated.timing(breathe, { toValue: 1, duration: dur, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
-        Animated.timing(breathe, { toValue: 0, duration: dur, easing: Easing.inOut(Easing.sine), useNativeDriver: true }),
+        Animated.timing(breathe, { toValue: 1, duration: dur, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(breathe, { toValue: 0, duration: dur, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
       ])
     );
     breatheLoopRef.current.start();
