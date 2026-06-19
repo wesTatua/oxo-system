@@ -4,7 +4,7 @@
     {
       "label": "OXO: Install & Start Expo (tunnel)",
       "type": "shell",
-      "command": "npm install && npx expo start --tunnel",
+      "command": "npm install && npx expo install --fix && npx expo start --tunnel",
       "group": { "kind": "build", "isDefault": true },
       "presentation": {
         "reveal": "always",
