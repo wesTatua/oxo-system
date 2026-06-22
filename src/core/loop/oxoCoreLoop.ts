@@ -9,6 +9,8 @@
  */
 
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Balanco, Venda, Agendamento, ChatMessage, AvatarState, OxoEvent } from '../../domain/entities';
 import { oxoSocket } from '../../data/websocket/oxoSocket';
 import { financeiroRepo, agendaRepo } from '../../data/api/repositories';
@@ -36,30 +38,46 @@ interface OxoState {
   setAvatarState: (s: AvatarState) => void;
 }
 
-export const useOxoStore = create<OxoState>((set) => ({
-  balanco: null,
-  vendas: [],
-  agenda: [],
-  mensagens: [
-    {
-      id: '0',
-      tipo: 'oxo',
-      texto: 'Fala, Comandante. Sistema online e pronto.',
-      timestamp: new Date().toISOString(),
-    },
-  ],
-  wsOnline: false,
-  apiOnline: false,
-  avatarState: 'ONLINE',
+export const useOxoStore = create<OxoState>()(
+  persist(
+    (set) => ({
+      balanco: null,
+      vendas: [],
+      agenda: [],
+      mensagens: [
+        {
+          id: '0',
+          tipo: 'oxo',
+          texto: 'Fala, Comandante. Sistema online e pronto.',
+          timestamp: new Date().toISOString(),
+        },
+      ],
+      wsOnline: false,
+      apiOnline: false,
+      avatarState: 'ONLINE',
 
-  setBalanco:    (balanco)     => set({ balanco }),
-  addVenda:      (v)           => set((s) => ({ vendas: [v, ...s.vendas].slice(0, 30) })),
-  setAgenda:     (agenda)      => set({ agenda }),
-  addMensagem:   (m)           => set((s) => ({ mensagens: [...s.mensagens, m] })),
-  setWsOnline:   (wsOnline)    => set({ wsOnline }),
-  setApiOnline:  (apiOnline)   => set({ apiOnline }),
-  setAvatarState:(avatarState) => set({ avatarState }),
-}));
+      setBalanco:    (balanco)     => set({ balanco }),
+      addVenda:      (v)           => set((s) => ({ vendas: [v, ...s.vendas].slice(0, 30) })),
+      setAgenda:     (agenda)      => set({ agenda }),
+      addMensagem:   (m)           => set((s) => ({ mensagens: [...s.mensagens, m] })),
+      setWsOnline:   (wsOnline)    => set({ wsOnline }),
+      setApiOnline:  (apiOnline)   => set({ apiOnline }),
+      setAvatarState:(avatarState) => set({ avatarState }),
+    }),
+    {
+      name: 'oxo-store',
+      storage: createJSONStorage(() => AsyncStorage),
+      // wsOnline/apiOnline/avatarState são estado de conexão ao vivo —
+      // não fazem sentido persistidos entre sessões do app.
+      partialize: (s) => ({
+        balanco: s.balanco,
+        vendas: s.vendas,
+        agenda: s.agenda,
+        mensagens: s.mensagens,
+      }),
+    }
+  )
+);
 
 // ── Bootstrapper — chame no app entry ─────────────────────────
 let pollInterval: ReturnType<typeof setInterval> | null = null;
