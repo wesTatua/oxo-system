@@ -24,6 +24,13 @@ export const agendaRepo: IAgendaRepository = {
     const { data } = await oxoClient.get('/agenda');
     return data.agenda ?? [];
   },
+  async editar(id, { data, hora, descricao }): Promise<void> {
+    const data_hora = data && hora ? `${data} ${hora}` : undefined;
+    await oxoClient.put(`/agenda/${id}`, { data_hora, descricao });
+  },
+  async cancelar(id): Promise<void> {
+    await oxoClient.delete(`/agenda/${id}`);
+  },
 };
 
 export const pixRepo: IPixRepository = {

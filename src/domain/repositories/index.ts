@@ -6,6 +6,8 @@ export interface IFinanceiroRepository {
 
 export interface IAgendaRepository {
   listar(): Promise<Agendamento[]>;
+  editar(id: string, dados: { data?: string; hora?: string; descricao?: string }): Promise<void>;
+  cancelar(id: string): Promise<void>;
 }
 
 export interface IPixRepository {
