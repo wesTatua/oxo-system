@@ -3,10 +3,12 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Colors, Fonts } from '../src/presentation/theme';
 import { startCoreLoop, stopCoreLoop } from '../src/core/loop/oxoCoreLoop';
+import { initOxoDiscovery } from '../src/data/api/oxoDiscovery';
 
 export default function RootLayout() {
   useEffect(() => {
     startCoreLoop();
+    initOxoDiscovery();
     return () => stopCoreLoop();
   }, []);
 
